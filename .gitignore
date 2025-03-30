@@ -1,4 +1,14 @@
 IciclesDataset
 VKI_DATA
-.ipynb_checkpoints
-
+venv/
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+*.pyc
+checkpoints/
+*.pth
+*.log
+.DS_Store
+.idea
+sam/
+*.jpg
