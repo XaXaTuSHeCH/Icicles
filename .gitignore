@@ -7,8 +7,14 @@ __pycache__/
 *.pyc
 checkpoints/
 *.pth
+*.pt
 *.log
+*.yaml
+*.yml
 .DS_Store
-.idea
+.idea/
 sam/
 *.jpg
+Dataset/
+Dataset_split/
+runs/
