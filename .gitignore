@@ -1,5 +1,3 @@
-IciclesDataset
-VKI_DATA
 venv/
 .ipynb_checkpoints/
 __pycache__/
@@ -11,10 +9,13 @@ checkpoints/
 *.log
 *.yaml
 *.yml
+*.cache
 .DS_Store
 .idea/
 sam/
 *.jpg
+*.png
 Dataset/
 Dataset_split/
 runs/
+weights/
