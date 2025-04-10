@@ -15,6 +15,7 @@ checkpoints/
 sam/
 *.jpg
 *.png
+*.zip
 Dataset/
 Dataset_split/
 runs/
