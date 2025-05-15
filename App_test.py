@@ -1,74 +1,54 @@
-import os
-
-import matplotlib.pyplot as plt
-import torch
-from PIL import Image
 from ultralytics import YOLO
+import yaml
+import cv2
+import os
+import sys
 
+def run_inference():
+    with open("config.yaml", "r") as f:
+        config = yaml.safe_load(f)
 
-def load_model(weights_path):
+    weights_path = config.get("weights_path", "best.pt")
     if not os.path.exists(weights_path):
-        raise FileNotFoundError(f"Модель не найдена: {weights_path}")
+        print(f"Ошибка: веса модели не найдены по пути {weights_path}")
+        return
+
     model = YOLO(weights_path)
-    print(f"Модель успешно загружена из {weights_path}")
-    return model
 
+    if "--camera" in sys.argv:
+        camera_index = config.get("camera_index", 0)
+        cap = cv2.VideoCapture(camera_index)
+        if not cap.isOpened():
+            print(f"Ошибка: не удалось открыть камеру {camera_index}")
+            return
 
-def validate_model(model, data_config):
-    print("Запуск валидации...")
-    results = model.val(data=data_config)
-    print("Результаты валидации:")
-    print(results)
-    return results
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
 
+            results = model(frame)
+            annotated_frame = results[0].plot()
 
-def run_inference(model, image_path, save_results=True, conf_threshold=0.5):
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(f"Изображение не найдено: {image_path}")
+            cv2.imshow("Детекция сосулек", annotated_frame)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
 
-    print(f"Выполняется инференс на изображении: {image_path}")
-    results = model.predict(
-        source=image_path,
-        save=save_results,
-        conf=conf_threshold,
-        show=False,
-        verbose=True,
-    )
-
-    return results
-
-
-def visualize_prediction(image_path, results):
-    img = Image.open(image_path).convert("RGB")
-    plt.figure(figsize=(8, 8))
-    plt.imshow(img)
-    plt.axis("off")
-    plt.title("Исходное изображение")
-
-    if results and hasattr(results[0], "plot"):
-        result_img = results[0].plot()
-        plt.figure(figsize=(8, 8))
-        plt.imshow(result_img)
-        plt.axis("off")
-        plt.title("Предсказание модели")
+        cap.release()
+        cv2.destroyAllWindows()
     else:
-        print("Предсказание не содержит визуализируемых данных.")
+        media_path = config.get("media_path")
+        if not media_path or not os.path.exists(media_path):
+            print("Ошибка: путь к изображению/видео не указан или не существует")
+            return
 
-    plt.show()
+        results = model(media_path)
+        for result in results:
+            annotated_frame = result.plot()
+            output_path = os.path.join("runs/segment", "output_" + os.path.basename(media_path))
+            cv2.imwrite(output_path, annotated_frame)
+            print(f"Результат сохранён: {output_path}")
 
 
 if __name__ == "__main__":
-
-    weights_path = "runs/segment/test3/weights/best.pt"
-    data_yaml_path = "data.yaml"
-    test_image_path = "Dataset_split/images/val/image3.jpg"
-
-    model = load_model(weights_path)
-
-    validation_results = validate_model(model, data_yaml_path)
-
-    inference_results = run_inference(
-        model, test_image_path, save_results=True, conf_threshold=0.5
-    )
-
-    visualize_prediction(test_image_path, inference_results)
+    run_inference()
