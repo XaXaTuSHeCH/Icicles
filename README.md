@@ -19,11 +19,6 @@ This project implements a computer vision model for automatic detection of icicl
 git clone https://github.com/XaXaTuSHeCH/Icicles
 ```
 
-2. Clone the SAM
-```bash
-git clone https://github.com/facebookresearch/segment-anything.git sam
-```
-
 3. Create virtual environment
 ```bash
 python3 -m venv venv
@@ -34,19 +29,9 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-5. Download the SAM:
-```bash
-pip install -e sam/
-```
-
 6. Install all dependencies:
 ```bash
 pip install -r requirements.txt
-```
-
-7. Download the model:
-```bash
-wget -P checkpoints https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth 
 ```
 
 ## :computer: Usage
@@ -59,7 +44,7 @@ Training configuration can be modified in app.py (train_config dictionary).
 
 #### Test the model
 ```bash
-python app_test.py
+python gui.py
 ```
 Before running, make sure to specify correct paths to:
 - Trained model weights (weights_path)
