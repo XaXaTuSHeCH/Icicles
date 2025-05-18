@@ -14,6 +14,9 @@ This project implements a computer vision model for automatic detection of icicl
 
 ## :inbox_tray: Installation
 
+### The easiest way to get program is to install Setup and Run files from pre-release
+### But if you're advanced user and programer, follow instructions below:
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/XaXaTuSHeCH/Icicles
@@ -60,6 +63,7 @@ After training, the model is saved in runs/segment/ including:
 ## :construction: License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## :coffee: Other collaborators
+## :coffee: Collaborators
 - :bear: https://github.com/MikeV182
 - :bug: https://github.com/KostKP
+- :computer: https://github.com/XaXaTuSHeCH
