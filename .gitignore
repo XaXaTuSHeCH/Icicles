@@ -7,7 +7,6 @@ checkpoints/
 build/
 dist/
 *.log
-*.yaml
 *.yml
 *.cache
 .DS_Store

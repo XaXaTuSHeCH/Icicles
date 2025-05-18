@@ -1,0 +1,4 @@
+camera_index: 0
+dataset_path: ''
+media_path: ''
+weights_path: weights/best.pt
